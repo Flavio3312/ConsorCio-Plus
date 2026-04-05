@@ -161,7 +161,7 @@ com.consorcioplus/
 ```
 
 ## Modelo de Datos — Base de Datos Relacional
-> | DER (Entidad-Relación) | [`diagramas/DER_SOA_TP1.drawio (1).svg`](diagramas/DER_SOA_TP1.drawio%20(1).svg) |
+> | DER (Entidad-Relación) | ![`diagramas/DER_SOA_TP1.drawio (1).svg`](diagramas/DER_SOA_TP1.drawio%20(1).svg) |
 
 
 |**Schema SQL** | [`resources/db/schema.sql`](resources/db/schema.sql) |
