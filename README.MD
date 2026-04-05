@@ -133,32 +133,7 @@ Un **consorcio de propietarios** es la persona jurídica que se forma cuando hay
 
 **ConsorCio+** es una aplicación de escritorio Java que cubre íntegramente el ciclo operativo de la administración de consorcios.
 
-### Arquitectura MVC — Estructura de Paquetes
 
-```
-com.consorcioplus/
-├── model/
-│   ├── entity/        ← POJOs: Consorcio, UnidadFuncional, Persona, Gasto...
-│   ├── dao/           ← Interfaces: IConsorcioDAO, IGastoDAO...
-│   └── dao/impl/      ← Implementaciones JDBC: ConsorcioDAOImpl...
-├── view/              ← JFrames y JPanels (Swing/AWT)
-│   ├── LoginFrame.java
-│   ├── MainFrame.java
-│   ├── consorcio/     ← FormConsorcioPanel, ListaConsorciosPanel
-│   ├── persona/       ← PersonaListPanel, PersonaFormDialog
-│   ├── gasto/         ← GastoListPanel, GastoFormDialog
-│   └── liquidacion/   ← LiquidacionPanel
-├── controller/        ← Lógica de negocio por dominio
-│   ├── LoginController.java
-│   ├── ConsorcioController.java
-│   ├── LiquidacionController.java
-│   └── ...
-└── util/
-    ├── DatabaseConnection.java  ← Singleton JDBC
-    ├── PasswordUtils.java       ← Hash SHA-256
-    ├── SessionManager.java      ← Usuario en sesión
-    └── AppColors.java           ← Paleta de colores centralizada
-```
 
 ## Modelo de Datos — Base de Datos Relacional
 > | DER (Entidad-Relación) | ![`diagramas/DER_SOA_TP1.drawio (1).svg`](diagramas/DER_SOA_TP1.drawio%20(1).svg) |
@@ -332,22 +307,7 @@ Ciclo de vida de incidencias de mantenimiento (CU-03).
 
 ---
 
-### Relaciones entre tablas
 
-```
-usuario
-  └── pago (id_usuario)
-  └── reclamo (id_usuario_alta)
-
-consorcio
-  ├── unidad_funcional (id_consorcio)
-  │     ├── persona_unidad  ──── persona
-  │     ├── liquidacion_detalle ──── pago
-  │     └── reclamo
-  ├── gasto (id_consorcio) ──── proveedor
-  └── liquidacion (id_consorcio)
-        └── liquidacion_detalle
-```
 
 ---
 
