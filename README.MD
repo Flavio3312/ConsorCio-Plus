@@ -68,8 +68,7 @@ La solución propuesta se fundamenta en tres dimensiones:
 
 | Módulo | Funcionalidades | ¿Incluido en Iteración 1? |
 |---|---|---|
-| Documentacion | ConsorCio+ Diagramas iniciales (cumple primeras iteraciones + documentacion  | ✅ |
-                                                  
+| Documentacion | ConsorCio+ Diagramas iniciales (cumple primeras iteraciones + documentacion  | ✅ |                                                  
 | Seguridad y Acceso | Login con perfiles (Admin / Operador) |  🔄 Iteración 2 |
 | Infraestructura | ABM de Consorcios y Unidades Funcionales |  🔄 Iteración 2 |
 | Personas | ABM de Propietarios e Inquilinos |  🔄 Iteración 2 |
