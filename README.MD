@@ -161,10 +161,10 @@ com.consorcioplus/
 ```
 
 ## Modelo de Datos — Base de Datos Relacional
-> | DER (Entidad-Relación) | [`diagramas/DER_SOA_TP1.drawio (1).svg`](../ConsorCio-Plus/diagramas/DER_SOA_TP1.drawio%20(1).svg) |
+> | DER (Entidad-Relación) | [`diagramas/DER_SOA_TP1.drawio (1).svg`](diagramas/DER_SOA_TP1.drawio%20(1).svg) |
 
 
-|**Schema SQL** | [`resources/db/schema.sql`](../ConsorCio-Plus/resources/db/schema.sql) |
+|**Schema SQL** | [`resources/db/schema.sql`](resources/db/schema.sql) |
 **Motor:** MySQL 8.x / MariaDB 10.x · Charset: `utf8mb4_unicode_ci`
 
 El esquema está compuesto por **11 tablas** organizadas en 6 grupos funcionales que reflejan directamente los módulos del sistema.
