@@ -1,0 +1,22 @@
+# .gitignore para ConsorCio+ Java
+# Compilados
+*.class
+*.jar
+target/
+out/
+build/
+
+# IDEs
+.idea/
+*.iml
+.eclipse/
+.classpath
+.project
+.settings/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Datos sensibles (no subir credenciales)
+util/DatabaseConnection.java.bak

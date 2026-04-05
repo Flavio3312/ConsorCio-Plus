@@ -64,16 +64,25 @@ La solución propuesta se fundamenta en tres dimensiones:
 | Arquitectura | MVC | Separación de responsabilidades |
 | Metodología | PUD | Iterativo, orientado a casos de uso |
 
+## Módulos de la Iteración 1
+
+- ✅ Autenticación con SHA-256
+- ✅ Gestión de Consorcios (ABM)
+- ✅ Gestión de Personas — Propietarios e Inquilinos (ABM)
+- ✅ Registro de Gastos mensuales (Ordinarios / Extraordinarios)
+- ✅ Liquidación Mensual con validación RD01 (100%) y mora automática
+- ✅ Bloqueo de períodos cerrados (RFS16)
+
 ### Alcance del Sistema (Módulos Planificados)
 
 | Módulo | Funcionalidades | ¿Incluido en Iteración 1? |
 |---|---|---|
-| Documentacion | ConsorCio+ Diagramas iniciales (cumple primeras iteraciones + documentacion  | ✅ |                                                  
-| Seguridad y Acceso | Login con perfiles (Admin / Operador) |  🔄 Iteración 2 |
-| Infraestructura | ABM de Consorcios y Unidades Funcionales |  🔄 Iteración 2 |
-| Personas | ABM de Propietarios e Inquilinos |  🔄 Iteración 2 |
-| Gastos | Registro categorizado (Ordinario/Extraordinario) |  🔄 Iteración 2 |
-| Liquidación | Cálculo y cierre mensual de expensas | 🔄 Iteración 2 |
+| Documentacion | ConsorCio+ Diagramas iniciales (cumple primeras iteraciones) + documentacion  | ✅ |                                                  
+| Seguridad y Acceso | Login con perfiles (Admin / Operador) |  ✅    Iteración 1  |
+| Infraestructura | ABM de Consorcios y Unidades Funcionales |  ✅ Iteración 1 inicial |
+| Personas | ABM de Propietarios e Inquilinos |  ✅ iteración 1 inicial |
+| Gastos | Registro categorizado (Ordinario/Extraordinario) |  ✅ Iteración 1 inicial |
+| Liquidación | Cálculo y cierre mensual de expensas | ✅ Iteración 1 inicial |
 | Cobros | Pagos, recibos y mora automática | 🔄 Iteración 2 |
 | Reclamos | Alta y seguimiento de incidencias | 🔄 Iteración 2 |
 | Reportes | Estado de deuda y dashboard financiero | 🔜 Futuro |
@@ -133,13 +142,40 @@ Un **consorcio de propietarios** es la persona jurídica que se forma cuando hay
 
 **ConsorCio+** es una aplicación de escritorio Java que cubre íntegramente el ciclo operativo de la administración de consorcios.
 
+### Arquitectura MVC — Estructura de Paquetes
 
+```
+com.consorcioplus/
+├── model/
+│   ├── entity/        ← POJOs: Consorcio, UnidadFuncional, Persona, Gasto...
+│   ├── dao/           ← Interfaces: IConsorcioDAO, IGastoDAO...
+│   └── dao/impl/      ← Implementaciones JDBC: ConsorcioDAOImpl...
+├── view/              ← JFrames y JPanels (Swing/AWT)
+│   ├── LoginFrame.java
+│   ├── MainFrame.java
+│   ├── consorcio/     ← FormConsorcioPanel, ListaConsorciosPanel
+│   ├── persona/       ← PersonaListPanel, PersonaFormDialog
+│   ├── gasto/         ← GastoListPanel, GastoFormDialog
+│   └── liquidacion/   ← LiquidacionPanel
+├── controller/        ← Lógica de negocio por dominio
+│   ├── LoginController.java
+│   ├── ConsorcioController.java
+│   ├── LiquidacionController.java
+│   └── ...
+└── util/
+    ├── DatabaseConnection.java  ← Singleton JDBC
+    ├── PasswordUtils.java       ← Hash SHA-256
+    ├── SessionManager.java      ← Usuario en sesión
+    └── AppColors.java           ← Paleta de colores centralizada
+```
 
 ## Modelo de Datos — Base de Datos Relacional
-> | DER (Entidad-Relación) | ![`diagramas/DER_SOA_TP1.drawio (1).svg`](diagramas/DER_SOA_TP1.drawio%20(1).svg) |
 
+| Recurso | Archivo |
+|---|---|
+| **Schema SQL** | [`resources/db/schema.sql`](resources/db/schema.sql) |
+| **DER** (Entidad-Relación) | [`diagramas/DER_SOA_TP1.drawio (1).svg`](diagramas/DER_SOA_TP1.drawio%20(1).svg) |
 
-|**Schema SQL** | [`resources/db/schema.sql`](resources/db/schema.sql) |
 **Motor:** MySQL 8.x / MariaDB 10.x · Charset: `utf8mb4_unicode_ci`
 
 El esquema está compuesto por **11 tablas** organizadas en 6 grupos funcionales que reflejan directamente los módulos del sistema.
@@ -307,12 +343,40 @@ Ciclo de vida de incidencias de mantenimiento (CU-03).
 
 ---
 
+## Ejecución Local del Prototipo — Guía Paso a Paso
 
+> **Sin instalación requerida.** El proyecto incluye JDK 1.8 portable y MariaDB portable.
+
+### Paso 1 — Iniciar la base de datos
+
+Hacer doble clic en `iniciar_BD.bat`. Esto levanta MariaDB en segundo plano en el **puerto 3307**. Dejar la ventana abierta (se puede minimizar).
+
+### Paso 2 — Ejecutar la aplicación
+
+Hacer doble clic en `iniciar.bat`. Esto lanza ConsorCio+ usando el JDK local.
+
+### Paso 3 — Iniciar sesión
+
+Ingresar con las credenciales por defecto:
+
+| Campo | Valor |
+|---|---|
+| Usuario | `admin` |
+| Contraseña | `admin123` |
+
+![Pantalla de Login](capturas/login.png)
+
+### Paso 4 — Panel principal
+
+Una vez autenticado se accede al menú principal con todos los módulos disponibles.
+
+![Panel Principal](capturas/pantalla_inicial.png)
+
+### Detener la base de datos
+
+Al cerrar la aplicación, ejecutar `detener_BD.bat`.
 
 ---
-
-
-
 
 ## Repositorio y Estructura de Entregas
 
@@ -322,8 +386,8 @@ Ciclo de vida de incidencias de mantenimiento (CU-03).
 
 | Módulo | Contenido | Estado |
 |---|---|---|
-| **Módulo 1** | Definición del proyecto, análisis, casos de uso, modelo de dominio, ERD | ✅ Este entregable |
-| **Módulo 2** | Prototipo funcional: Login, ABM Consorcios, ABM Personas, Gastos, Liquidación básica | 🔄 En desarrollo |
+| **Módulo 1** | Definición del proyecto, análisis, casos de uso, modelo de dominio, ERD | Prototipo funcional v1.0 | ✅ Este entregable |
+| **Módulo 2** | Prototipo funcional v1.1 : Login, ABM Consorcios, ABM Personas, Gastos, Liquidación básica | 🔄 En desarrollo |
 | **Módulo 3** | Módulos de Cobros, Reclamos y Reportes completos | 🔜 Planificado |
 | **Módulo 4** | Refinamiento, pruebas, documentación final | 🔜 Planificado |
 
