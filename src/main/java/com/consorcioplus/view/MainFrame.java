@@ -7,6 +7,7 @@ import com.consorcioplus.view.consorcio.ConsorcioListPanel;
 import com.consorcioplus.view.gasto.GastoListPanel;
 import com.consorcioplus.view.liquidacion.LiquidacionPanel;
 import com.consorcioplus.view.persona.PersonaListPanel;
+import com.consorcioplus.view.unidad.UnidadFuncionalListPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,8 +22,8 @@ import java.awt.event.MouseEvent;
 public class MainFrame extends JFrame {
 
     private final LoginController loginController = new LoginController();
-    private JPanel   panelContenido;
-    private JLabel   lblUsuario;
+    private JPanel panelContenido;
+    private JLabel lblUsuario;
 
     public MainFrame() {
         super("ConsorCio+ — Panel Principal");
@@ -48,7 +49,7 @@ public class MainFrame extends JFrame {
         panelContenido.setBackground(AppColors.FONDO_PANEL);
         mostrarBienvenida();
 
-        raiz.add(sidebar,       BorderLayout.WEST);
+        raiz.add(sidebar, BorderLayout.WEST);
         raiz.add(panelContenido, BorderLayout.CENTER);
 
         setContentPane(raiz);
@@ -83,10 +84,11 @@ public class MainFrame extends JFrame {
         menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
         menu.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-        menu.add(crearItemMenu("🏢  Consorcios",    () -> mostrarPanel(new ConsorcioListPanel())));
-        menu.add(crearItemMenu("👥  Personas",       () -> mostrarPanel(new PersonaListPanel())));
-        menu.add(crearItemMenu("💰  Gastos",         () -> mostrarPanel(new GastoListPanel())));
-        menu.add(crearItemMenu("📋  Liquidaciones",  () -> mostrarPanel(new LiquidacionPanel())));
+        menu.add(crearItemMenu("🏢  Consorcios", () -> mostrarPanel(new ConsorcioListPanel())));
+        menu.add(crearItemMenu("🔑  Unidades Funcionales", () -> mostrarPanel(new UnidadFuncionalListPanel())));
+        menu.add(crearItemMenu("👥  Personas", () -> mostrarPanel(new PersonaListPanel())));
+        menu.add(crearItemMenu("💰  Gastos", () -> mostrarPanel(new GastoListPanel())));
+        menu.add(crearItemMenu("📋  Liquidaciones", () -> mostrarPanel(new LiquidacionPanel())));
 
         // Footer del sidebar
         JPanel footerSidebar = new JPanel(new BorderLayout());
@@ -94,8 +96,8 @@ public class MainFrame extends JFrame {
         footerSidebar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         String usuario = SessionManager.getInstance().haySesionActiva()
-            ? SessionManager.getInstance().getUsuarioActual().getUsername()
-            : "—";
+                ? SessionManager.getInstance().getUsuarioActual().getUsername()
+                : "—";
         lblUsuario = new JLabel("●  " + usuario, SwingConstants.LEFT);
         lblUsuario.setFont(AppColors.FUENTE_PEQUEÑA);
         lblUsuario.setForeground(new Color(0x90, 0xc4, 0xe8));
@@ -110,7 +112,7 @@ public class MainFrame extends JFrame {
         btnSalir.addActionListener(e -> cerrarSesion());
 
         footerSidebar.add(lblUsuario, BorderLayout.CENTER);
-        footerSidebar.add(btnSalir,   BorderLayout.SOUTH);
+        footerSidebar.add(btnSalir, BorderLayout.SOUTH);
 
         sidebar.add(lblLogo);
         sidebar.add(lblSlogan);
@@ -138,12 +140,19 @@ public class MainFrame extends JFrame {
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         item.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) { accion.run(); }
-            @Override public void mouseEntered(MouseEvent e) {
-                item.setBackground(AppColors.AZUL_MEDIO);
-                
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                accion.run();
             }
-            @Override public void mouseExited(MouseEvent e) {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                item.setBackground(AppColors.AZUL_MEDIO);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
                 item.setBackground(AppColors.AZUL_OSCURO);
             }
         });
@@ -165,9 +174,8 @@ public class MainFrame extends JFrame {
         JPanel card = new JPanel();
         card.setBackground(AppColors.FONDO_CARD);
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(AppColors.BORDE_PANEL),
-            new EmptyBorder(40, 60, 40, 60)
-        ));
+                BorderFactory.createLineBorder(AppColors.BORDE_PANEL),
+                new EmptyBorder(40, 60, 40, 60)));
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
 
         JLabel lbl1 = new JLabel("Bienvenido a ConsorCio+", SwingConstants.CENTER);
@@ -190,8 +198,8 @@ public class MainFrame extends JFrame {
 
     private void cerrarSesion() {
         int confirmar = JOptionPane.showConfirmDialog(this,
-            "¿Desea cerrar la sesión?", "Cerrar Sesión",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                "¿Desea cerrar la sesión?", "Cerrar Sesión",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (confirmar == JOptionPane.YES_OPTION) {
             loginController.cerrarSesion();
             new LoginFrame().setVisible(true);
@@ -199,4 +207,3 @@ public class MainFrame extends JFrame {
         }
     }
 }
-

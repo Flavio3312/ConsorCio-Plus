@@ -68,6 +68,7 @@ La solución propuesta se fundamenta en tres dimensiones:
 
 - ✅ Autenticación con SHA-256
 - ✅ Gestión de Consorcios (ABM)
+- ✅ **Gestión de Unidades Funcionales (ABM) con validación de porcentuales (RD01)**
 - ✅ Gestión de Personas — Propietarios e Inquilinos (ABM)
 - ✅ Registro de Gastos mensuales (Ordinarios / Extraordinarios)
 - ✅ Liquidación Mensual con validación RD01 (100%) y mora automática
@@ -153,13 +154,15 @@ com.consorcioplus/
 ├── view/              ← JFrames y JPanels (Swing/AWT)
 │   ├── LoginFrame.java
 │   ├── MainFrame.java
-│   ├── consorcio/     ← FormConsorcioPanel, ListaConsorciosPanel
+│   ├── consorcio/     ← ConsorcioListPanel, ConsorcioFormDialog
+│   ├── unidad/        ← UnidadFuncionalListPanel, UnidadFuncionalFormDialog
 │   ├── persona/       ← PersonaListPanel, PersonaFormDialog
 │   ├── gasto/         ← GastoListPanel, GastoFormDialog
 │   └── liquidacion/   ← LiquidacionPanel
 ├── controller/        ← Lógica de negocio por dominio
 │   ├── LoginController.java
 │   ├── ConsorcioController.java
+│   ├── UnidadFuncionalController.java
 │   ├── LiquidacionController.java
 │   └── ...
 └── util/
@@ -347,6 +350,26 @@ Ciclo de vida de incidencias de mantenimiento (CU-03).
 
 > **Sin instalación requerida.** El proyecto incluye JDK 1.8 portable y MariaDB portable.
 
+### Paso 0 — Compilar el proyecto *(solo la primera vez o tras modificar el código)*
+
+Antes de ejecutar la app por primera vez, o cada vez que se modifique el código fuente, es necesario compilar los archivos Java hacia la carpeta `out/`. Abrir una terminal (`cmd` o PowerShell) dentro de la carpeta `ConsorCioPlus/` y ejecutar:
+
+```powershell
+# Definir rutas
+$JDK  = ".\..\jdk1.8\java-1.8.0-openjdk-1.8.0.482.b08-1.win.jdk.x86_64\bin\javac.exe"
+$LIBS = (Get-ChildItem ".\lib" -Filter "*.jar" | Select-Object -ExpandProperty FullName) -join ";"
+$SRCS = (Get-ChildItem ".\src" -Recurse -Filter "*.java" | Select-Object -ExpandProperty FullName)
+
+# Compilar todos los fuentes hacia out/
+& $JDK -encoding UTF-8 -cp $LIBS -d ".\out" $SRCS
+```
+
+Si no hay errores en la terminal, la compilación fue exitosa y la carpeta `out/` quedará actualizada.
+
+> **¿Por qué es necesario?** El `iniciar.bat` ejecuta los `.class` compilados en `out/`. Si se modifica el código fuente `.java` sin recompilar, la app seguirá corriendo la versión antigua.
+
+---
+
 ### Paso 1 — Iniciar la base de datos
 
 Hacer doble clic en `iniciar_BD.bat`. Esto levanta MariaDB en segundo plano en el **puerto 3307**. Dejar la ventana abierta (se puede minimizar).
@@ -368,9 +391,23 @@ Ingresar con las credenciales por defecto:
 
 ### Paso 4 — Panel principal
 
-Una vez autenticado se accede al menú principal con todos los módulos disponibles.
+Una vez autenticado se accede al menú principal con todos los módulos disponibles: Consorcios, Unidades Funcionales, Personas, Gastos y Liquidaciones.
 
 ![Panel Principal](capturas/pantalla_inicial.png)
+
+### Paso 5 — Orden de carga recomendado *(primera vez)*
+
+Para poder ejecutar una liquidación correctamente, se deben cargar los datos en este orden:
+
+| Paso | Módulo | Acción |
+|---|---|---|
+| 1 | **Consorcios** | Crear el consorcio (edificio) |
+| 2 | **Unidades Funcionales** | Cargar todas las UFs hasta que la suma de porcentuales llegue exactamente al **100%** |
+| 3 | **Personas** | Registrar propietarios e inquilinos |
+| 4 | **Gastos** | Registrar los gastos del período a liquidar |
+| 5 | **Liquidaciones** | Ejecutar la liquidación mensual |
+
+> ⚠️ Si se intenta liquidar sin haber cargado Unidades Funcionales, el sistema mostrará el error: *"El consorcio no tiene Unidades Funcionales activas"*.
 
 ### Detener la base de datos
 
