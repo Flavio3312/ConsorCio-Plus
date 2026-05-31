@@ -3,10 +3,13 @@ package com.consorcioplus.view;
 import com.consorcioplus.controller.LoginController;
 import com.consorcioplus.util.AppColors;
 import com.consorcioplus.util.SessionManager;
+import com.consorcioplus.view.cobros.CobrosPanel;
 import com.consorcioplus.view.consorcio.ConsorcioListPanel;
 import com.consorcioplus.view.gasto.GastoListPanel;
 import com.consorcioplus.view.liquidacion.LiquidacionPanel;
 import com.consorcioplus.view.persona.PersonaListPanel;
+import com.consorcioplus.view.reclamos.ReclamosPanel;
+import com.consorcioplus.view.reportes.ReportesPanel;
 import com.consorcioplus.view.unidad.UnidadFuncionalListPanel;
 
 import javax.swing.*;
@@ -89,6 +92,10 @@ public class MainFrame extends JFrame {
         menu.add(crearItemMenu("👥  Personas", () -> mostrarPanel(new PersonaListPanel())));
         menu.add(crearItemMenu("💰  Gastos", () -> mostrarPanel(new GastoListPanel())));
         menu.add(crearItemMenu("📋  Liquidaciones", () -> mostrarPanel(new LiquidacionPanel())));
+        menu.add(crearSeparadorMenu());
+        menu.add(crearItemMenu("💳  Cobros", () -> mostrarPanel(new CobrosPanel())));
+        menu.add(crearItemMenu("🔧  Reclamos", () -> mostrarPanel(new ReclamosPanel())));
+        menu.add(crearItemMenu("📊  Reportes", () -> mostrarPanel(new ReportesPanel())));
 
         // Footer del sidebar
         JPanel footerSidebar = new JPanel(new BorderLayout());
@@ -123,6 +130,15 @@ public class MainFrame extends JFrame {
         sidebar.add(footerSidebar);
 
         return sidebar;
+    }
+
+    /** Línea separadora visual entre grupos de menú. */
+    private JSeparator crearSeparadorMenu() {
+        JSeparator sep = new JSeparator();
+        sep.setForeground(new Color(0x2a, 0x5a, 0x8c));
+        sep.setBackground(new Color(0x2a, 0x5a, 0x8c));
+        sep.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
+        return sep;
     }
 
     private JPanel crearItemMenu(String texto, Runnable accion) {

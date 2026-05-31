@@ -137,6 +137,9 @@ CREATE TABLE liquidacion_detalle (
     id                     INT AUTO_INCREMENT PRIMARY KEY,
     id_liquidacion         INT            NOT NULL,
     id_unidad              INT            NOT NULL,
+    numero_unidad          VARCHAR(10)    DEFAULT NULL COMMENT 'Desnorm. de unidad_funcional.numero',
+    piso_unidad            VARCHAR(5)     DEFAULT NULL COMMENT 'Desnorm. de unidad_funcional.piso',
+    porcentual             DECIMAL(7,4)   DEFAULT NULL COMMENT 'Porcentual al momento de liquidar',
     expensa_ordinaria      DECIMAL(12, 2) NOT NULL DEFAULT 0,
     expensa_extraordinaria DECIMAL(12, 2) NOT NULL DEFAULT 0,
     mora_aplicada          DECIMAL(12, 2) NOT NULL DEFAULT 0,
@@ -175,7 +178,9 @@ CREATE TABLE reclamo (
     fecha_alta       DATETIME NOT NULL DEFAULT NOW(),
     fecha_resolucion DATETIME,
     id_usuario_alta  INT      NOT NULL,
-    FOREIGN KEY (id_unidad)      REFERENCES unidad_funcional(id),
+    nro_reclamo      VARCHAR(40) UNIQUE
+        COMMENT 'Número único generado automáticamente: REC-YYYYMMDD-XXXXX',
+    FOREIGN KEY (id_unidad)       REFERENCES unidad_funcional(id),
     FOREIGN KEY (id_usuario_alta) REFERENCES usuario(id)
 );
 CREATE INDEX idx_reclamo_unidad ON reclamo(id_unidad);

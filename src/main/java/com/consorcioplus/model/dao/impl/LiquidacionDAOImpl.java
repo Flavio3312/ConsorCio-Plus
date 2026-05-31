@@ -71,18 +71,21 @@ public class LiquidacionDAOImpl implements ILiquidacionDAO {
     @Override
     public void saveDetalle(LiquidacionDetalle d) throws SQLException {
         String sql = "INSERT INTO liquidacion_detalle "
-                   + "(id_liquidacion, id_unidad, expensa_ordinaria, expensa_extraordinaria, "
-                   + " mora_aplicada, total_a_pagar, saldo_deudor) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                   + "(id_liquidacion, id_unidad, numero_unidad, piso_unidad, porcentual, "
+                   + " expensa_ordinaria, expensa_extraordinaria, mora_aplicada, total_a_pagar, saldo_deudor) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, d.getIdLiquidacion());
             stmt.setInt(2, d.getIdUnidad());
-            stmt.setBigDecimal(3, d.getExpensaOrdinaria());
-            stmt.setBigDecimal(4, d.getExpensaExtraordinaria());
-            stmt.setBigDecimal(5, d.getMoraAplicada());
-            stmt.setBigDecimal(6, d.getTotalAPagar());
-            stmt.setBigDecimal(7, d.getSaldoDeudor());
+            stmt.setString(3, d.getNumeroUnidad());
+            stmt.setString(4, d.getPisoUnidad());
+            stmt.setBigDecimal(5, d.getPorcentual());
+            stmt.setBigDecimal(6, d.getExpensaOrdinaria());
+            stmt.setBigDecimal(7, d.getExpensaExtraordinaria());
+            stmt.setBigDecimal(8, d.getMoraAplicada());
+            stmt.setBigDecimal(9, d.getTotalAPagar());
+            stmt.setBigDecimal(10, d.getSaldoDeudor());
             stmt.executeUpdate();
             try (ResultSet keys = stmt.getGeneratedKeys()) {
                 if (keys.next()) d.setId(keys.getInt(1));
@@ -105,7 +108,9 @@ public class LiquidacionDAOImpl implements ILiquidacionDAO {
         String sql = "SELECT ld.id, ld.id_liquidacion, ld.id_unidad, "
                    + "       ld.expensa_ordinaria, ld.expensa_extraordinaria, "
                    + "       ld.mora_aplicada, ld.total_a_pagar, ld.saldo_deudor, "
-                   + "       uf.numero AS numero_unidad, uf.piso AS piso_unidad, uf.porcentual "
+                   + "       COALESCE(ld.numero_unidad, uf.numero) AS numero_unidad, "
+                   + "       COALESCE(ld.piso_unidad, uf.piso) AS piso_unidad, "
+                   + "       COALESCE(ld.porcentual, uf.porcentual) AS porcentual "
                    + "FROM liquidacion_detalle ld "
                    + "JOIN unidad_funcional uf ON uf.id = ld.id_unidad "
                    + "WHERE ld.id_liquidacion = ? "
@@ -126,7 +131,9 @@ public class LiquidacionDAOImpl implements ILiquidacionDAO {
         String sql = "SELECT ld.id, ld.id_liquidacion, ld.id_unidad, "
                    + "       ld.expensa_ordinaria, ld.expensa_extraordinaria, "
                    + "       ld.mora_aplicada, ld.total_a_pagar, ld.saldo_deudor, "
-                   + "       uf.numero AS numero_unidad, uf.piso AS piso_unidad, uf.porcentual "
+                   + "       COALESCE(ld.numero_unidad, uf.numero) AS numero_unidad, "
+                   + "       COALESCE(ld.piso_unidad, uf.piso) AS piso_unidad, "
+                   + "       COALESCE(ld.porcentual, uf.porcentual) AS porcentual "
                    + "FROM liquidacion_detalle ld "
                    + "JOIN liquidacion l ON l.id = ld.id_liquidacion "
                    + "JOIN unidad_funcional uf ON uf.id = ld.id_unidad "

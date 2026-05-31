@@ -49,4 +49,12 @@ public class Liquidacion {
     public BigDecimal getTotalGeneral() {
         return totalOrdinario.add(totalExtraordinario);
     }
+
+    @Override
+    public String toString() {
+        if (periodo == null) return "Liquidación #" + id;
+        return periodo.getMonthValue() + "/" + periodo.getYear()
+                + " — $" + getTotalGeneral().toPlainString()
+                + (cerrada ? " ✓" : "");
+    }
 }

@@ -1,8 +1,8 @@
 # ConsorCio+ — Sistema de Gestión de Administración de Consorcio
 
-**Seminario de Práctica Informática — Módulo 1: Definición del Proyecto**  
+**Seminario de Práctica Informática — Módulo 3 / TP3: Desarrollo del Sistema Utilizando Java**  
 **Alumno:** Flavio Pérez  
-**Fecha:** Marzo 2026  
+**Fecha:** Mayo 2026  
 **Metodología:** Proceso Unificado de Desarrollo (PUD)
 
 ---
@@ -64,30 +64,91 @@ La solución propuesta se fundamenta en tres dimensiones:
 | Arquitectura | MVC | Separación de responsabilidades |
 | Metodología | PUD | Iterativo, orientado a casos de uso |
 
-## Módulos de la Iteración 1
+## Plan de Entregas Iterativas (PUD)
+
+El proyecto **ConsorCio+** se desarrolla siguiendo el **Proceso Unificado de Desarrollo (PUD)**, con cuatro módulos iterativos e incrementales.
+
+| Módulo | Contenido Principal | Disciplinas PUD | Estado |
+|---|---|---|---|
+| **Módulo 1 — TP1** | Definición del proyecto, análisis de requerimientos, casos de uso, modelo de dominio, ERD (DER) | Requisitos, Análisis | ✅ COMPLETADO |
+| **Módulo 2 — TP2** | Prototipo funcional: Login, ABM Consorcios, ABM Personas, Gastos, Liquidación básica (Swing + JDBC) | Diseño, Implementación inicial | ✅ COMPLETADO |
+| **Módulo 3 — TP3** | Desarrollo en Java: POO aplicada, estructuras de datos, módulos de Cobros, Reclamos y Reportes | Implementación, Pruebas unitarias | ▶ **ENTREGABLE ACTUAL** |
+| **Módulo 4 — TP4** | Refinamiento, pruebas de integración, documentación final, estrategia de despliegue | Pruebas, Despliegue | 🔜 Planificado |
+
+---
+
+### Detalle de Iteraciones
+
+#### Iteración 1 — Módulo 1 (TP1) ✅
+
+**Objetivo:** Análisis y definición del proyecto.
+
+- ✅ Relevamiento de requerimientos funcionales y no funcionales
+- ✅ Diagrama de casos de uso (CU-01 a CU-05)
+- ✅ Modelo de dominio y Diagrama Entidad-Relación (DER)
+- ✅ Definición de reglas de negocio (RD01, RD02, RD03)
+- ✅ Diseño del esquema de base de datos (11 tablas, 6 grupos funcionales)
+- ✅ Documentación inicial del proyecto (elicitación, conocimiento del negocio, justificación)
+
+#### Iteración 2 — Módulo 2 (TP2) ✅
+
+**Objetivo:** Prototipo funcional con los módulos core del sistema.
 
 - ✅ Autenticación con SHA-256
-- ✅ Gestión de Consorcios (ABM)
+- ✅ Gestión de Consorcios (ABM completo)
 - ✅ **Gestión de Unidades Funcionales (ABM) con validación de porcentuales (RD01)**
 - ✅ Gestión de Personas — Propietarios e Inquilinos (ABM)
 - ✅ Registro de Gastos mensuales (Ordinarios / Extraordinarios)
-- ✅ Liquidación Mensual con validación RD01 (100%) y mora automática
-- ✅ Bloqueo de períodos cerrados (RFS16)
+- ✅ Liquidación Mensual con validación RD01 (suma 100%) y mora automática
+- ✅ Bloqueo de períodos cerrados (RD03)
+- ✅ Arquitectura MVC implementada (model / view / controller / util)
+- ✅ MariaDB portable + JDK 1.8 portable (sin instalación requerida)
 
-### Alcance del Sistema (Módulos Planificados)
+#### Iteración 3 — Módulo 3 (TP3) ▶ ACTUAL
 
-| Módulo | Funcionalidades | ¿Incluido en Iteración 1? |
+**Objetivo:** Profundización del desarrollo en Java: POO, estructuras de datos y algoritmia.
+
+- ✅ Aplicación de los cuatro pilares de POO en el dominio del negocio:
+  - **Abstracción:** Clases abstractas (`Comprobante`) e interfaces (`Calculable`, `Reportable`)
+  - **Encapsulamiento:** Atributos `private` con getters/setters validados en todas las entidades
+  - **Herencia:** Jerarquía `Persona → Propietario / Inquilino`; `Comprobante → Recibo / ComprobanteGasto`
+  - **Polimorfismo:** Sobrescritura de métodos y uso de referencias de tipo base
+- ✅ Estructuras de datos aplicadas al dominio:
+  - `ArrayList` — gestión de listas de unidades funcionales y gastos
+  - `LinkedList` — historial de pagos parciales
+  - `Stack` — pila de auditoría de acciones del usuario
+  - `Queue` — cola de procesamiento de reclamos pendientes
+- ✅ Algoritmos de ordenación y búsqueda (Bubble Sort, búsqueda binaria)
+- ✅ Manejo robusto de excepciones con jerarquía propia (`ConsorcioException`, `TransicionEstadoInvalidaException`)
+- ✅ Uso de `BigDecimal` para precisión financiera en todos los cálculos
+- ✅ Módulos de **Cobros**, **Reclamos** y **Reportes** (base implementada, tablas en schema)
+
+#### Iteración 4 — Módulo 4 (TP4) 🔜
+
+**Objetivo:** Refinamiento, pruebas de integración y documentación final.
+
+- 🔜 Pruebas de integración completas
+- 🔜 Envío de liquidaciones por email (SMTP)
+- 🔜 Dashboard financiero y reportes avanzados
+- 🔜 Documentación técnica final
+
+---
+
+### Alcance del Sistema (Módulos por Iteración)
+
+| Módulo | Funcionalidades | Iteración |
 |---|---|---|
-| Documentacion | ConsorCio+ Diagramas iniciales (cumple primeras iteraciones) + documentacion  | ✅ |                                                  
-| Seguridad y Acceso | Login con perfiles (Admin / Operador) |  ✅    Iteración 1  |
-| Infraestructura | ABM de Consorcios y Unidades Funcionales |  ✅ Iteración 1 inicial |
-| Personas | ABM de Propietarios e Inquilinos |  ✅ iteración 1 inicial |
-| Gastos | Registro categorizado (Ordinario/Extraordinario) |  ✅ Iteración 1 inicial |
-| Liquidación | Cálculo y cierre mensual de expensas | ✅ Iteración 1 inicial |
-| Cobros | Pagos, recibos y mora automática | 🔄 Iteración 2 |
-| Reclamos | Alta y seguimiento de incidencias | 🔄 Iteración 2 |
-| Reportes | Estado de deuda y dashboard financiero | 🔜 Futuro |
-| Email SMTP | Envío automático de liquidaciones | 🔜 Futuro |
+| Documentación | Diagramas, casos de uso, modelo de dominio, ERD | ✅ Iteración 1 |
+| Seguridad y Acceso | Login con perfiles (Admin / Operador) | ✅ Iteración 2 |
+| Infraestructura | ABM de Consorcios y Unidades Funcionales | ✅ Iteración 2 |
+| Personas | ABM de Propietarios e Inquilinos | ✅ Iteración 2 |
+| Gastos | Registro categorizado (Ordinario/Extraordinario) | ✅ Iteración 2 |
+| Liquidación | Cálculo y cierre mensual de expensas | ✅ Iteración 2 |
+| POO / Estructuras | Jerarquía de clases, colecciones, algoritmos | ✅ Iteración 3 |
+| Cobros | Pagos, recibos y mora automática | ▶ Iteración 3 |
+| Reclamos | Alta y seguimiento de incidencias | ▶ Iteración 3 |
+| Reportes | Estado de deuda y dashboard financiero | 🔜 Iteración 4 |
+| Email SMTP | Envío automático de liquidaciones | 🔜 Iteración 4 |
 
 ---
 
@@ -419,14 +480,14 @@ Al cerrar la aplicación, ejecutar `detener_BD.bat`.
 
 **Repositorio GitHub:** [ConsorCio+](https://github.com/Flavio3312/ConsorCio-Plus.git)
 
-### Plan de entregas iterativas (PUD)
+### Historial de entregas
 
 | Módulo | Contenido | Estado |
 |---|---|---|
-| **Módulo 1** | Definición del proyecto, análisis, casos de uso, modelo de dominio, ERD | Prototipo funcional v1.0 | ✅ Este entregable |
-| **Módulo 2** | Prototipo funcional v1.1 : Login, ABM Consorcios, ABM Personas, Gastos, Liquidación básica | 🔄 En desarrollo |
-| **Módulo 3** | Módulos de Cobros, Reclamos y Reportes completos | 🔜 Planificado |
-| **Módulo 4** | Refinamiento, pruebas, documentación final | 🔜 Planificado |
+| **Módulo 1 — TP1** | Definición del proyecto, análisis, casos de uso, modelo de dominio, ERD | ✅ Completado |
+| **Módulo 2 — TP2** | Prototipo funcional v1.0: Login, ABM Consorcios, ABM Personas, Gastos, Liquidación básica | ✅ Completado |
+| **Módulo 3 — TP3** | Desarrollo Java: POO, estructuras de datos, Cobros, Reclamos, Reportes | ▶ **Entregable actual** |
+| **Módulo 4 — TP4** | Refinamiento, pruebas de integración, documentación final | 🔜 Planificado |
 
 ---
 
